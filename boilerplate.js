@@ -53,7 +53,7 @@ function recordRunTime(day, runNumber, time)
     saveStats(stats);
 }
 
-const STATS_FILE = "stats.json";
+const STATS_FILE = "stats2024.json";
 export function loadStats() {
     if (!fs.existsSync(STATS_FILE)) {
         fs.writeFileSync(STATS_FILE, JSON.stringify({ runs: [] }));
