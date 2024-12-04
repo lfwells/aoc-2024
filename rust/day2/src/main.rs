@@ -32,17 +32,20 @@ fn main() {
             I: IntoIterator<Item = i32> + Clone
     {
         let len = arr.clone().into_iter().size_hint().0;
+        println!("ORIG {:?}", arr.clone().into_iter().collect::<Vec<_>>());
         //create a bunch of copies of arr, each with the element at position n removed
         let mut n = 0;
         return std::iter::from_fn(move || {
             n+=1;
-            if n >= len {
+            if n > len {
                 return None;
             }
             //this part i needed ai, as I didn't know how to use chain yet
             //I also don't know why this needs to be wrapped in Some (I guess its the from_fn needs to do None/Some)
             //I also don't know if the many clones here are dangerous/expensive
-            return Some(arr.clone().into_iter().take(n-1).chain(arr.clone().into_iter().skip(n)).collect::<Vec<_>>());
+            let r = Some(arr.clone().into_iter().take(n-1).chain(arr.clone().into_iter().skip(n)).collect::<Vec<_>>());
+            println!("{:?}", r);
+            return r;
 
             //here was my attempt with a skip of 1 but didn't work
             //return Some(arr.clone().into_iter().take(n-1).skip(1).take(len).collect::<Vec<_>>());
