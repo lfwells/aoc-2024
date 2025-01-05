@@ -14,24 +14,28 @@ run(9, (input) =>
     //for part 2...
     let files = [];
     let free = [];
-
+    let block = 0;
     for (var i = 0; i < numbers.length; i++)
     {
         let number = numbers[i];
         if (isFile)
         {
             disk += (fileID.toString()+"|").repeat(number);
+            files.push({block,number});
             fileID++;
         }
         else
         {
             disk += ".|".repeat(number);
+            free.push({block,number});
         }
 
         isFile = !isFile;
-    }
+        block += number;
+    };
     disk = disk.substring(0, disk.length-1).split("|");
-    console.log({disk});
+    let disk2 = [...disk];
+    console.log({disk, files, free});
 
     function swapArr(arr, i, j)
     {
@@ -67,9 +71,35 @@ run(9, (input) =>
     //88055642995 is too low!?
     //6154342787400
 
+    for (var i = files.length-1; i>=0; i--)
+    {
+        var ff = files[i];
+        var number = ff.number;
+        var pos = ff.block;
+        for (var j = 0; j < free.length; j++)
+        {
+            var f = free[j];
+            var number2 = f.number;
+            var pos2 = f.block;
+            if (number <= number2)//i.e. there is enough space
+            {
+                for (var k = 0; k < number; k++)
+                {
+                    disk2[pos+k] = ".";
+                    disk2[pos2+k] = i;
+                }
+                free[j].number -= number;
+                free[j].block += number;
+                free.push({block: pos, number: number2-number});
+                break;
+            }
+        }
+    }
+    console.log({disk2, files, free, part2: checksum(disk2)});
+    //8318971197991 is too high!?
+
     function checksum(disk)
     {
         return disk.map((char, index) => char == "." ? 0 : index*parseInt(char)).reduce((a, b) => a+b, 0);
-
     }
 });
