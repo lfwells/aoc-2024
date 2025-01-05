@@ -86,3 +86,19 @@ export const isSuperset = function(set, subset) {
         array[randomIndex], array[currentIndex]];
     }
   }
+
+  // https://stackoverflow.com/questions/43241174/javascript-generating-all-combinations-of-elements-in-a-single-array-in-pairs
+  export const combinationN = function* (array, n) {
+    if (n === 1) {
+      for (const a of array) {
+        yield [a];
+      }
+      return;
+    }
+  
+    for (let i = 0; i <= array.length - n; i++) {
+      for (const c of combinationN(array.slice(i + 1), n - 1)) {
+        yield [array[i], ...c];
+      }
+    }
+  }
