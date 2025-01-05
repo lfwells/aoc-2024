@@ -71,6 +71,7 @@ run(8, (input) =>
     //console.log(printMap(debugMap));
     //231 too low ....
     //254 too high....
+    //240 was correct, i literally had to guess this :(
 
     
     function printMap(map)
